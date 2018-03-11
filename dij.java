@@ -4,32 +4,34 @@ public class dij {
     private int costo[][] = new int[10][10];
 
     private void calc(int n, int s) {
-        int vandera[] = new int[n + 1];
-        int i, minpos = 1, k, c, minimum;
+        boolean visto[] = new boolean[10];
+        int w, c, min, vertice = 0;
 
-        for (i = 1; i <= n; i++) {
-            vandera[i] = 0;
-            this.distancia[i] = this.costo[s][i];
+        for (w = 1; w <= n; w++) {
+            visto[w] = false;
+            if (this.costo[s][w] == -1) {
+                this.distancia[w] = 9999;
+            } else {
+                this.distancia[w] = this.costo[s][w];
+            }
         }
-        System.out.println();
+
+        this.distancia[s] = 0;
+        visto[s] = true;
         c = 2;
         while (c <= n) {
-            minimum = 99;
-            for (k = 1; k <= n; k++) {
-                System.out.print("D[" + k + "]=" + distancia[k] + " ");
-                if (this.distancia[k] <= minimum && vandera[k] != 1) {
-                    minimum = this.distancia[i];
-                    minpos = k;
+            min = 999;
+            for (s = 1; s <= n; s++) {
+                if (this.distancia[s] < min && !visto[s]) {
+                    min = this.distancia[s];
+                    vertice = s;
                 }
             }
-            System.out.println();
-            vandera[minpos] = 1;
+            visto[vertice] = true;
             c++;
-            for (k = 1; k <= n; k++) {
-                System.out.println(" "+this.distancia[minpos] +" + "+ this.costo[minpos][k] +" < "+ this.distancia[k]+ " && "+ vandera[k] +" != "+ 1);
-                if (this.distancia[minpos] + this.costo[minpos][k] < this.distancia[k] && vandera[k] != 1) {
-                    System.out.println(this.distancia[k] + "=" + this.distancia[minpos] + "+" + this.costo[minpos][k]);
-                    this.distancia[k] = this.distancia[minpos] + this.costo[minpos][k];
+            for (w = 1; w <= n; w++) {
+                if (this.distancia[w] > this.distancia[vertice] + this.costo[vertice][w] && !visto[w]) {
+                    this.distancia[w] = this.distancia[vertice] + this.costo[vertice][w];
                 }
             }
         }
